@@ -49,6 +49,7 @@ function tomorrow(today, tomorrow) {
       }
     }
     // year_now = yaer tomorrow
+    console.log(tomorrow);
     return [tomorrow, year_now];
   }
 
@@ -65,17 +66,29 @@ function tomorrow(today, tomorrow) {
     tomorrow
   ) {
     let tomorow_day = day_check(day_now, tomorrow);
+
     let tomorow_date = tomorow_yaer_check(year_now, tomorrow)[0];
     let tomorow_yaer = tomorow_yaer_check(year_now, tomorrow)[1];
     if (tomorow_yaer % 4 == 0) {
       calendar["month"][1] = 29;
     }
-    tomorow_date = tomorow_date - (calendar["month"][month_now - 1] - date_now);
     let i = month_now;
-    do {
-      tomorow_date -= calendar["month"][i];
-      i++;
-    } while (tomorow_date > 31);
+    if (tomorow_date > 30) {
+      tomorow_date =
+        tomorow_date - (calendar["month"][month_now - 1] - date_now);
+      do {
+        tomorow_date -= calendar["month"][i];
+        i++;
+      } while (tomorow_date > 31);
+    } else {
+      if (tomorow_date + date_now < calendar["month"][month_now - 1]) {
+        tomorow_date += date_now;
+      } else {
+        tomorow_date =
+          tomorow_date + date_now - calendar["month"][month_now - 1];
+        i = month_now + 1;
+      }
+    }
     return tomorow_day + ":" + tomorow_date + "/" + i + "/" + tomorow_yaer;
   }
 
@@ -84,4 +97,4 @@ function tomorrow(today, tomorrow) {
   //tomorow_yaer_check(year_now,tomorrow);
 }
 
-console.log(tomorrow([3, 20, 3, 2000], 100001));
+console.log(tomorrow([2, 25, 4, 2023], 3));
