@@ -1,4 +1,4 @@
-function tomorow(today, tomorow) {
+function tomorrow(today, tomorrow) {
   let year_366 = 0;
   let calendar = {
     day: {
@@ -25,8 +25,8 @@ function tomorow(today, tomorow) {
       11: 31,
     },
   };
-  function day_check(today, tomorow) {
-    let next_day = tomorow % 7;
+  function day_check(today, tomorrow) {
+    let next_day = tomorrow % 7;
     if (next_day == 0) {
       return calendar["day"][today];
     } else if (today + next_day >= 7) {
@@ -36,20 +36,20 @@ function tomorow(today, tomorow) {
     }
   }
 
-  function tomorow_yaer_check(year_now, tomorow) {
+  function tomorow_yaer_check(year_now, tomorrow) {
     year_366 = (year_now % 4) + 1;
-    while (tomorow >= 365) {
+    while (tomorrow >= 365) {
       year_366++;
       if (year_366 < 4) {
-        tomorow -= 365;
+        tomorrow -= 365;
         year_now++;
       } else {
         year_366 = 1;
-        tomorow -= 366;
+        tomorrow -= 366;
       }
     }
-    // year_now = yaer tomorow
-    return [tomorow, year_now];
+    // year_now = yaer tomorrow
+    return [tomorrow, year_now];
   }
 
   let year_now = today[3];
@@ -62,11 +62,11 @@ function tomorow(today, tomorow) {
     date_now,
     year_now,
     month_now,
-    tomorow
+    tomorrow
   ) {
-    let tomorow_day = day_check(day_now, tomorow);
-    let tomorow_date = tomorow_yaer_check(year_now, tomorow)[0];
-    let tomorow_yaer = tomorow_yaer_check(year_now, tomorow)[1];
+    let tomorow_day = day_check(day_now, tomorrow);
+    let tomorow_date = tomorow_yaer_check(year_now, tomorrow)[0];
+    let tomorow_yaer = tomorow_yaer_check(year_now, tomorrow)[1];
     if (tomorow_yaer % 4 == 0) {
       calendar["month"][1] = 29;
     }
@@ -79,9 +79,9 @@ function tomorow(today, tomorow) {
     return tomorow_day + ":" + tomorow_date + "/" + i + "/" + tomorow_yaer;
   }
 
-  return tomorow_month_check(day_now, date_now, year_now, month_now, tomorow);
+  return tomorow_month_check(day_now, date_now, year_now, month_now, tomorrow);
   // return month_now;
-  //tomorow_yaer_check(year_now,tomorow);
+  //tomorow_yaer_check(year_now,tomorrow);
 }
 
-console.log(tomorow([3, 20, 3, 2000], 100001));
+console.log(tomorrow([3, 20, 3, 2000], 100001));
