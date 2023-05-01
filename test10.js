@@ -1,5 +1,8 @@
 function tomorrow(today, tomorrow) {
-  let year_366 = 0;
+  let year = today[3];
+  let month = today[2];
+  let date = today[1];
+  let day = today[0];
   let calendar = {
     day: {
       0: "SUN",
@@ -10,19 +13,19 @@ function tomorrow(today, tomorrow) {
       5: "FRI",
       6: "SAT",
     },
-    month: {
-      0: 31,
-      1: 28,
-      2: 31,
-      3: 30,
-      4: 31,
-      5: 30,
-      6: 31,
+    months: {
+      1: 31,
+      2: 28,
+      3: 31,
+      4: 30,
+      5: 31,
+      6: 30,
       7: 31,
-      8: 30,
-      9: 31,
-      10: 30,
-      11: 31,
+      8: 31,
+      9: 30,
+      10: 31,
+      11: 30,
+      12: 31,
     },
   };
   function day_check(today, tomorrow) {
@@ -35,66 +38,48 @@ function tomorrow(today, tomorrow) {
       return calendar["day"][today + next_day];
     }
   }
+  day = day_check(today[0], tomorrow);
 
-  function tomorow_yaer_check(year_now, tomorrow) {
-    year_366 = (year_now % 4) + 1;
-    while (tomorrow >= 365) {
-      year_366++;
-      if (year_366 < 4) {
-        tomorrow -= 365;
-        year_now++;
-      } else {
-        year_366 = 1;
-        tomorrow -= 366;
-      }
-    }
-    // year_now = yaer tomorrow
-    console.log(tomorrow);
-    return [tomorrow, year_now];
-  }
-
-  let year_now = today[3];
-  let month_now = today[2];
-  let date_now = today[1];
-  let day_now = today[0];
-
-  function tomorow_month_check(
-    day_now,
-    date_now,
-    year_now,
-    month_now,
-    tomorrow
-  ) {
-    let tomorow_day = day_check(day_now, tomorrow);
-
-    let tomorow_date = tomorow_yaer_check(year_now, tomorrow)[0];
-    let tomorow_yaer = tomorow_yaer_check(year_now, tomorrow)[1];
-    if (tomorow_yaer % 4 == 0) {
-      calendar["month"][1] = 29;
-    }
-    let i = month_now;
-    if (tomorow_date > 30) {
-      tomorow_date =
-        tomorow_date - (calendar["month"][month_now - 1] - date_now);
-      do {
-        tomorow_date -= calendar["month"][i];
-        i++;
-      } while (tomorow_date > 31);
+  if (tomorrow <= 31) {
+    if (date + tomorrow <= calendar["months"][month]) {
+      date = date + tomorrow;
     } else {
-      if (tomorow_date + date_now < calendar["month"][month_now - 1]) {
-        tomorow_date += date_now;
-      } else {
-        tomorow_date =
-          tomorow_date + date_now - calendar["month"][month_now - 1];
-        i = month_now + 1;
-      }
+      tomorrow -= calendar["months"][month] - date;
+      month++;
+      date = tomorrow;
     }
-    return tomorow_day + ":" + tomorow_date + "/" + i + "/" + tomorow_yaer;
+  } else {
+    tomorrow -= calendar["months"][month] - date;
+    let value = month + 1;
+    while (tomorrow > 28) {
+      if (year % 4 == 0) {
+        calendar["months"][2] = 29;
+      } else {
+        calendar["months"][2] = 28;
+      }
+      if (tomorrow >= calendar["months"][value]) {
+        tomorrow -= calendar["months"][value];
+        if (tomorrow == 0) {
+          tomorrow = calendar["months"][value];
+        }
+        month++;
+        date = tomorrow;
+      } else {
+        console.log(tomorrow);
+        date = tomorrow;
+        console.log(date);
+        tomorrow = 0;
+        month++;
+      }
+      value++;
+      if (value == 13) {
+        month = 1;
+        value = 1;
+        year++;
+      }
+      //console.log(calendar["months"][2] + ":" + month+":"+year);
+    }
   }
-
-  return tomorow_month_check(day_now, date_now, year_now, month_now, tomorrow);
-  // return month_now;
-  //tomorow_yaer_check(year_now,tomorrow);
+  return console.log(day + ":" + date + "/" + month + "/" + year);
 }
-
-console.log(tomorrow([2, 25, 4, 2023], 3));
+tomorrow([5, 28, 4, 2023], 300000000);

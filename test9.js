@@ -30,7 +30,7 @@ let currency = {
   KRW: 38.72,
   THB: 1,
 };
-let change_cash = {};
+
 let money = [1, 2, 5, 10, 20, 50, 100, 500, 1000];
 money.reverse();
 let total_value =
@@ -52,8 +52,10 @@ function change_currency(currency_your, currency_wanted, price) {
 }
 
 function payment(price, cm_pay) {
+  let change_cash = {};
+  let change = 0;
   if (cm_pay >= price) {
-    var change = cm_pay - price;
+    change = cm_pay - price;
   } else {
     return "Your money not enoung";
   }
@@ -73,5 +75,11 @@ function payment(price, cm_pay) {
   return change_cash;
 }
 //console.log(total_value);
-console.log(change_currency("JPY", "USD", 100));
-console.log(payment(35, 1000));
+console.log(cash);
+let customer_money = change_currency("JPY", "THB", 2000);
+console.log(customer_money);
+console.log(payment(333, customer_money));
+let customer_money2 = change_currency("SGD", "THB", 5);
+console.log(customer_money2);
+console.log(payment(35, customer_money2));
+console.log(cash);
